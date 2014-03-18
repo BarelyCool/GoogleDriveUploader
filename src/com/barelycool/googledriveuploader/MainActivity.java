@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -35,14 +34,6 @@ public class MainActivity extends Activity implements ConnectionCallbacks,
                 .addScope(Drive.SCOPE_FILE).addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this).build();
         mGoogleApiClient.connect();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(final Menu menu)
-    {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
     }
 
     @Override
