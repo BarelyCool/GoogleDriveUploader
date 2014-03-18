@@ -159,7 +159,9 @@ public class FullscreenActivity extends Activity implements
             {
                 if (resultCode == RESULT_OK)
                 {
-                    mGoogleApiClient.connect();
+                    // FIXME Causes infinite loop of app prompting the user for
+                    // authorization.
+                    // mGoogleApiClient.connect();
                 }
                 break;
             }
