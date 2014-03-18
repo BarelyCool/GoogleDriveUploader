@@ -124,6 +124,7 @@ public class FullscreenActivity extends Activity implements
             new GoogleApiClient.Builder(this).addApi(Drive.API)
                 .addScope(Drive.SCOPE_FILE).addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this).build();
+        mGoogleApiClient.connect();
     }
 
     /**
@@ -140,16 +141,6 @@ public class FullscreenActivity extends Activity implements
         delayedHide(100);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void onStart()
-    {
-        super.onStart();
-        mGoogleApiClient.connect();
-    }
-
     @Override
     protected void onActivityResult(final int requestCode,
         final int resultCode, final Intent data)
@@ -159,9 +150,7 @@ public class FullscreenActivity extends Activity implements
             {
                 if (resultCode == RESULT_OK)
                 {
-                    // FIXME Causes infinite loop of app prompting the user for
-                    // authorization.
-                    // mGoogleApiClient.connect();
+                    mGoogleApiClient.connect();
                 }
                 break;
             }
