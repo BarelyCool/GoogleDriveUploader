@@ -94,9 +94,9 @@ public abstract class SystemUiHider {
     public static SystemUiHider getInstance(Activity activity, View anchorView, int flags) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             return new SystemUiHiderHoneycomb(activity, anchorView, flags);
-        } else {
-            return new SystemUiHiderBase(activity, anchorView, flags);
         }
+
+        return new SystemUiHiderBase(activity, anchorView, flags);
     }
 
     protected SystemUiHider(Activity activity, View anchorView, int flags) {
@@ -155,6 +155,7 @@ public abstract class SystemUiHider {
     private static OnVisibilityChangeListener sDummyListener = new OnVisibilityChangeListener() {
         @Override
         public void onVisibilityChange(boolean visible) {
+            // Nothing to do.
         }
     };
 
