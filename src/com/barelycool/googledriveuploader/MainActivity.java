@@ -14,8 +14,11 @@ import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListe
 import com.google.android.gms.drive.Drive;
 
 /**
- * An example full-screen activity that shows and hides the system UI (i.e.
- * status bar and navigation/system bar) with user interaction.
+ * Main activity for the Google Drive Uploader application. Upon creation this
+ * activity will attempt to connect to the Google Drive service. The first time
+ * this activity is launched after install the user will be prompted to select a
+ * Google account or to add a new one. Once the user selects an account a
+ * connection to the Google Drive service will be attempted.
  */
 public class MainActivity extends Activity implements ConnectionCallbacks,
     OnConnectionFailedListener
@@ -23,17 +26,29 @@ public class MainActivity extends Activity implements ConnectionCallbacks,
     // ::-----------------------------------------------------------------------
     // :: Activity Interface
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
-        mGoogleApiClient =
+        // Build a GoogleApiClient object that will be used to connect with the
+        // Google Drive service. Add this activity as both connection and
+        // connection failed listeners so that appropriate action can be taken
+        // once a connection is attempted.
+        _googleApiClient =
             new GoogleApiClient.Builder(this).addApi(Drive.API)
                 .addScope(Drive.SCOPE_FILE).addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this).build();
-        mGoogleApiClient.connect();
+
+        Log.i(TAG, "Attempting to connect to the Google Drive service.");
+
+        // Attempt to connect to the Google Drive service.
+        _googleApiClient.connect();
     }
 
     @Override
@@ -45,8 +60,9 @@ public class MainActivity extends Activity implements ConnectionCallbacks,
             {
                 if (resultCode == RESULT_OK)
                 {
-                    mGoogleApiClient.connect();
+                    _googleApiClient.connect();
                 }
+
                 break;
             }
             default:
@@ -62,8 +78,7 @@ public class MainActivity extends Activity implements ConnectionCallbacks,
     @Override
     public void onConnected(final Bundle arg0)
     {
-        // TODO Auto-generated method stub
-        Log.i("GoogleDriveUploader", "Connected!");
+        Log.i(TAG, "Successfully connected to the Google Drive service.");
     }
 
     @Override
@@ -100,10 +115,14 @@ public class MainActivity extends Activity implements ConnectionCallbacks,
     // ::-----------------------------------------------------------------------
     // :: Data Members
 
-    private GoogleApiClient mGoogleApiClient;
+    // Client used to connect to the Google Drive service.
+    private GoogleApiClient _googleApiClient;
 
     // ::-----------------------------------------------------------------------
     // :: Private Constants
+
+    // Tag used for identification purposes for all log entries.
+    private static final String TAG = "GoogleDriveUploader";
 
     private static final int RESOLVE_CONNECTION_REQUEST_CODE = 0;
 }
